@@ -21,7 +21,8 @@
     "prepare": "yarn clean && yarn build"
   },
   "activationEvents": [
-    "onLanguage:Dockerfile"
+    "onLanguage:Dockerfile",
+    "onCommand:docker.version"
   ],
   "contributes": {
     "configuration": {
