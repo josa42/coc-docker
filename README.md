@@ -15,7 +15,7 @@ See [`dockerfile-language-server-nodejs`](https://github.com/rcjsuen/dockerfile-
 
 ## Configuration options
 
-- `docker.enable` set to `false` to disable gopls language server.
+- `docker.enable` set to `false` to disable language server.
 
 Trigger completion in `coc-settings.json` to get complete list.
 

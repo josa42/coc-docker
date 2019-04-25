@@ -1,7 +1,7 @@
 {
   "name": "coc-docker",
   "version": "0.1.0",
-  "description": "gopls extension for coc",
+  "description": "docker extension for coc",
   "author": "josa@gesell.me",
   "license": "MIT",
   "main": "lib/extension.js",
@@ -12,7 +12,7 @@
   "keywords": [
     "coc.nvim",
     "languageserver",
-    "gopls"
+    "docker"
   ],
   "scripts": {
     "clean": "rimraf lib",
@@ -36,7 +36,7 @@
     },
     "commands": [
       {
-        "command": "go.version",
+        "command": "docker.version",
         "title": "Print extension version"
       }
     ]
