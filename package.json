@@ -48,14 +48,14 @@
   "devDependencies": {
     "@chemzqm/tsconfig": "^0.0.3",
     "@chemzqm/tslint-config": "^1.0.17",
-    "@types/node": "^10.14.5",
-    "coc.nvim": "0.0.62",
+    "@types/node": "^12.6.9",
+    "coc.nvim": "0.0.73",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "dockerfile-language-server-nodejs": "^0.0.20",
+    "dockerfile-language-server-nodejs": "^0.0.21",
     "tslib": "^1.9.3"
   }
 }
