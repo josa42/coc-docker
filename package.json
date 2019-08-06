@@ -48,7 +48,7 @@
   "devDependencies": {
     "@chemzqm/tsconfig": "^0.0.3",
     "@chemzqm/tslint-config": "^1.0.17",
-    "@types/node": "^12.6.9",
+    "@types/node": "^10.14.14",
     "coc.nvim": "0.0.73",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
