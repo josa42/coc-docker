@@ -1,5 +1,6 @@
 import path from 'path'
-import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, workspace, services, LanguageClientOptions } from 'coc.nvim'
+import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, workspace, services, languages, LanguageClientOptions } from 'coc.nvim'
+import { DockerComposeCompletionItemProvider } from './dockerCompose/dockerComposeCompletionItemProvider'
 
 export async function activate(context: ExtensionContext): Promise<void> {
 
@@ -28,6 +29,10 @@ export async function activate(context: ExtensionContext): Promise<void> {
       const v = require(path.resolve(__dirname, '..', 'package.json')).version
       workspace.showMessage(`Version: ${v}`, 'more')
     })
+  )
+
+  context.subscriptions.push(
+    languages.registerCompletionItemProvider('docker-compose', 'docker', 'yaml.docker-compose', new DockerComposeCompletionItemProvider())
   )
 }
 

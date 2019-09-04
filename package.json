@@ -25,6 +25,7 @@
   },
   "activationEvents": [
     "onLanguage:Dockerfile",
+    "onLanguage:yaml.docker-compose",
     "onCommand:docker.version"
   ],
   "contributes": {
