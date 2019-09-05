@@ -9,19 +9,19 @@ export async function activate(context: ExtensionContext): Promise<void> {
     return
   }
 
-  let serverModule = context.asAbsolutePath(path.join('node_modules', 'dockerfile-language-server-nodejs', 'lib', 'server.js'));
+  let serverModule = context.asAbsolutePath(path.join('node_modules', 'dockerfile-language-server-nodejs', 'lib', 'server.js'))
 
   let serverOptions: ServerOptions = {
     module: serverModule,
     transport: TransportKind.ipc,
     args: ["--node-ipc"]
-  };
+  }
 
   let clientOptions: LanguageClientOptions = {
     documentSelector: ['Dockerfile']
-  };
+  }
 
-  const client = new LanguageClient("docker", "dockerfile-language-server-nodejs", serverOptions, clientOptions);
+  const client = new LanguageClient("docker", "dockerfile-language-server-nodejs", serverOptions, clientOptions)
 
   context.subscriptions.push(
     services.registLanguageClient(client),

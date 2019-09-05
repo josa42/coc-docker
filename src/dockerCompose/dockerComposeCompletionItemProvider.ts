@@ -13,26 +13,29 @@ import { KeyInfo } from './types'
 import { SuggestSupportHelper } from '../utils/suggestSupportHelper'
 
 export class DockerComposeCompletionItemProvider implements CompletionItemProvider {
-  async provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken, context?: CompletionContext): Promise<CompletionItem[] | CompletionList> {
+  async provideCompletionItems(textDocument: TextDocument, position: Position, token: CancellationToken, context?: CompletionContext): Promise<CompletionItem[] | CompletionList> {
 
-    let yamlSuggestSupport = new SuggestSupportHelper()
-
-    workspace.getLine(document.uri, position.line)
+    let hub = new SuggestSupportHelper()
 
     // Determine the schema version of the current compose file,
     // based on the existence of a top-level "version" property.
-    let versionMatch = document.getText().match(/^version:\s*(["'])(\d+(\.\d)?)\1/im)
+    let versionMatch = textDocument.getText().match(/^version:\s*(["'])(\d+(\.\d)?)\1/im)
     let version = versionMatch ? versionMatch[2] : "1"
 
-    // Get the line where intellisense was invoked on (e.g. 'image: u').
-    let line = await workspace.getLine(document.uri, position.line)
+    let document = workspace.getDocument(textDocument.uri)
 
+    // Get the line where intellisense was invoked on (e.g. 'image: u').
+    let line = await workspace.getLine(textDocument.uri, position.line)
     if (line.length === 0) {
       // empty line
       return Promise.resolve(this.suggestKeys('', version))
     }
 
-    const word = getWord(line, position.character)
+    let range = document.getWordRangeAtPosition(position)
+
+    // Get the text where intellisense was invoked on (e.g. 'u').
+    let word = range && textDocument.getText(range)
+
     let textBefore = line.substring(0, position.character)
     if (/^\s*[\w_]*$/.test(textBefore)) {
       // on the first token
@@ -41,18 +44,16 @@ export class DockerComposeCompletionItemProvider implements CompletionItemProvid
 
     // Matches strings like: 'image: "ubuntu'
     let imageTextWithQuoteMatchYaml = textBefore.match(/^\s*image\s*\:\s*"([^"]*)$/)
-
     if (imageTextWithQuoteMatchYaml) {
       let imageText = imageTextWithQuoteMatchYaml[1]
-      return yamlSuggestSupport.suggestImages(imageText)
+      return hub.suggestImages(imageText)
     }
 
     // Matches strings like: 'image: ubuntu'
     let imageTextWithoutQuoteMatch = textBefore.match(/^\s*image\s*\:\s*([\w\:\/]*)/)
-
     if (imageTextWithoutQuoteMatch) {
       let imageText = imageTextWithoutQuoteMatch[1]
-      return yamlSuggestSupport.suggestImages(imageText)
+      return hub.suggestImages(imageText)
     }
 
     return Promise.resolve([])
@@ -71,13 +72,5 @@ export class DockerComposeCompletionItemProvider implements CompletionItemProvid
       return completionItem
     })
   }
-}
-
-function getWord(line: string, character: number): string {
-  const before = line.substring(0, character)
-  const after = line.substring(character)
-  const word = before.match(/([^\s/:.]*)$/)[1] + after.match(/^([^\s/:.]*)/)[1]
-
-  return word
 }
 
