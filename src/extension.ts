@@ -18,7 +18,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   }
 
   let clientOptions: LanguageClientOptions = {
-    documentSelector: ['Dockerfile']
+    documentSelector: ['Dockerfile', 'dockerfile']
   }
 
   const client = new LanguageClient("docker", "dockerfile-language-server-nodejs", serverOptions, clientOptions)
