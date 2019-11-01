@@ -31,8 +31,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
     })
   )
 
-  context.subscriptions.push(
-    languages.registerCompletionItemProvider('docker-compose', 'docker', 'yaml.docker-compose', new DockerComposeCompletionItemProvider())
-  )
+  // context.subscriptions.push(
+  //   languages.registerCompletionItemProvider('docker-compose', 'docker', 'yaml.docker-compose', new DockerComposeCompletionItemProvider())
+  // )
 }
 

@@ -45,7 +45,11 @@
         "command": "docker.version",
         "title": "Print extension version"
       }
-    ]
+    ],
+    "yamlValidation": [{
+      "fileMatch": "*",
+      "url": "./schema/compose.json"
+    }]
   },
   "devDependencies": {
     "@chemzqm/tsconfig": "^0.0.3",
