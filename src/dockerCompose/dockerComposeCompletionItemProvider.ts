@@ -6,53 +6,52 @@
 'use strict'
 
 import { CompletionItemProvider, workspace } from 'coc.nvim'
-import { CompletionContext, TextDocument, CompletionItem, CompletionItemKind, Position, CompletionList } from "vscode-languageserver-protocol"
-import { CancellationToken } from "vscode-jsonrpc"
+import { TextDocument, CompletionItem, CompletionItemKind, Position, CompletionList } from "vscode-languageserver-protocol"
 import composeVersions from './dockerComposeKeyInfo'
 import { KeyInfo } from './types'
 import { SuggestSupportHelper } from '../utils/suggestSupportHelper'
 
 export class DockerComposeCompletionItemProvider implements CompletionItemProvider {
-  async provideCompletionItems(textDocument: TextDocument, position: Position, token: CancellationToken, context?: CompletionContext): Promise<CompletionItem[] | CompletionList> {
+  async provideCompletionItems(textDocument: TextDocument, position: Position /*, token: CancellationToken, context?: CompletionContext */): Promise<CompletionItem[] | CompletionList> {
 
-    let hub = new SuggestSupportHelper()
+    const hub = new SuggestSupportHelper()
 
     // Determine the schema version of the current compose file,
     // based on the existence of a top-level "version" property.
-    let versionMatch = textDocument.getText().match(/^version:\s*(["'])(\d+(\.\d)?)\1/im)
-    let version = versionMatch ? versionMatch[2] : "1"
+    const versionMatch = textDocument.getText().match(/^version:\s*(["'])(\d+(\.\d)?)\1/im)
+    const version = versionMatch ? versionMatch[2] : "1"
 
-    let document = workspace.getDocument(textDocument.uri)
+    const document = workspace.getDocument(textDocument.uri)
 
     // Get the line where intellisense was invoked on (e.g. 'image: u').
-    let line = await workspace.getLine(textDocument.uri, position.line)
+    const line = await workspace.getLine(textDocument.uri, position.line)
     if (line.length === 0) {
       // empty line
       return Promise.resolve(this.suggestKeys('', version))
     }
 
-    let range = document.getWordRangeAtPosition(position)
+    const range = document.getWordRangeAtPosition(position)
 
     // Get the text where intellisense was invoked on (e.g. 'u').
-    let word = range && textDocument.getText(range)
+    const word = range && textDocument.getText(range)
 
-    let textBefore = line.substring(0, position.character)
+    const textBefore = line.substring(0, position.character)
     if (/^\s*[\w_]*$/.test(textBefore)) {
       // on the first token
       return Promise.resolve(this.suggestKeys(word, version))
     }
 
     // Matches strings like: 'image: "ubuntu'
-    let imageTextWithQuoteMatchYaml = textBefore.match(/^\s*image\s*\:\s*"([^"]*)$/)
+    const imageTextWithQuoteMatchYaml = textBefore.match(/^\s*image\s*:\s*"([^"]*)$/)
     if (imageTextWithQuoteMatchYaml) {
-      let imageText = imageTextWithQuoteMatchYaml[1]
+      const imageText = imageTextWithQuoteMatchYaml[1]
       return hub.suggestImages(imageText)
     }
 
     // Matches strings like: 'image: ubuntu'
-    let imageTextWithoutQuoteMatch = textBefore.match(/^\s*image\s*\:\s*([\w\:\/]*)/)
+    const imageTextWithoutQuoteMatch = textBefore.match(/^\s*image\s*:\s*([\w:/]*)/)
     if (imageTextWithoutQuoteMatch) {
-      let imageText = imageTextWithoutQuoteMatch[1]
+      const imageText = imageTextWithoutQuoteMatch[1]
       return hub.suggestImages(imageText)
     }
 
@@ -62,10 +61,10 @@ export class DockerComposeCompletionItemProvider implements CompletionItemProvid
   private suggestKeys(word: string, version: string): CompletionItem[] {
     // Attempt to grab the keys for the requested schema version,
     // otherwise, fall back to showing a composition of all possible keys.
-    const keys = <KeyInfo>composeVersions[`v${version}`] || composeVersions.All
+    const keys = composeVersions[`v${version}`] as KeyInfo || composeVersions.All
 
     return Object.keys(keys).map(ruleName => {
-      let completionItem = CompletionItem.create(ruleName)
+      const completionItem = CompletionItem.create(ruleName)
       completionItem.kind = CompletionItemKind.Keyword
       completionItem.insertText = ruleName + ': '
       completionItem.documentation = keys[ruleName]

@@ -5,10 +5,12 @@
 
 'use strict'
 
+import fs from 'fs'
+import path from 'path'
 import { CompletionItem, CompletionItemKind } from "vscode-languageserver-protocol"
 import { request, RequestOptions } from 'https'
 
-const pkg = require('../../package.json')
+const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'package.json'), 'utf-8'))
 
 export class SuggestSupportHelper {
   public async suggestImages(word: string): Promise<CompletionItem[]> {
@@ -31,8 +33,8 @@ export class SuggestSupportHelper {
   }
 }
 
-function tagsForImage(image: IHubSearchItem): string[] {
-  let tags: string[] = []
+function tagsForImage(image: HubSearchItem): string[] {
+  const tags: string[] = []
   if (image.is_automated) {
     tags.push('Automated')
   } else if (image.is_trusted) {
@@ -57,7 +59,7 @@ const popular = [
   { "is_automated": true, "name": "microsoft/aspnet", "is_trusted": true, "is_official": false, "star_count": 277, "description": "ASP.NET is an open source server-side Web application framework" }
 ]
 
-async function searchImagesInRegistryHub(prefix: string, cache: boolean): Promise<IHubSearchItem[]> {
+async function searchImagesInRegistryHub(prefix: string, cache: boolean): Promise<HubSearchItem[]> {
   if (prefix.length === 0) {
     // return the popular images if user invoked intellisense
     // right after typing the keyword and ':' (e.g. 'image:').
@@ -86,9 +88,9 @@ async function searchImagesInRegistryHub(prefix: string, cache: boolean): Promis
 //     "query": "redis",
 //     "page": 1
 // }
-function invokeHubSearch(imageName: string, count: number, cache: boolean): Promise<IHubSearchResponse> {
+function invokeHubSearch(imageName: string, count: number, cache: boolean): Promise<HubSearchResponse> {
   // https://registry.hub.docker.com/v1/search?q=redis&n=1
-  return httpsRequestJson<IHubSearchResponse>({
+  return httpsRequestJson<HubSearchResponse>({
     hostname: 'registry.hub.docker.com',
     port: 443,
     path: '/v1/search?q=' + encodeURIComponent(imageName) + '&n=' + count,
@@ -96,16 +98,16 @@ function invokeHubSearch(imageName: string, count: number, cache: boolean): Prom
   }, cache)
 }
 
-interface IHubSearchResponse {
+interface HubSearchResponse {
   num_pages: number
   num_results: number
-  results: [IHubSearchItem]
+  results: [HubSearchItem]
   page_size: number
   query: string
   page: number
 }
 
-export interface IHubSearchItem {
+export interface HubSearchItem {
   is_automated: boolean
   name: string
   is_trusted: boolean
@@ -114,8 +116,8 @@ export interface IHubSearchItem {
   description: string
 }
 
-// tslint:disable-next-line:no-any
-let JSON_CACHE: { [key: string]: Promise<any> } = {}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const JSON_CACHE: { [key: string]: Promise<any> } = {}
 
 function httpsRequestJson<T>(opts: RequestOptions, cache: boolean): Promise<T> {
 
@@ -123,7 +125,7 @@ function httpsRequestJson<T>(opts: RequestOptions, cache: boolean): Promise<T> {
     return doHttpsRequestJson(opts)
   }
 
-  let cacheKey = `${opts.method} ${opts.hostname} ${opts.path}`
+  const cacheKey = `${opts.method} ${opts.hostname} ${opts.path}`
   if (!JSON_CACHE[cacheKey]) {
     JSON_CACHE[cacheKey] = doHttpsRequestJson(opts)
   }
@@ -144,7 +146,7 @@ async function doHttpsRequestJson<T>(opts: RequestOptions): Promise<T> {
 
 async function httpsRequest(opts: RequestOptions): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    let req = request(opts, (res) => {
+    const req = request(opts, (res) => {
       let data = ''
       res.on('data', (d: string) => data += d)
       res.on('end', () => resolve(data))

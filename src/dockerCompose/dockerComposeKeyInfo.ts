@@ -340,14 +340,13 @@ const DOCKER_COMPOSE_V2_2_KEY_INFO: KeyInfo = {
 // Helper function that merges the specified version-specific keys with the shared
 // keys, in order to create a complete schema for a specic version.
 function mergeWithSharedKeys(...versions: KeyInfo[]): KeyInfo {
-  return <KeyInfo>Object.assign({}, DOCKER_COMPOSE_SHARED_KEY_INFO, ...versions)
+  return Object.assign({}, DOCKER_COMPOSE_SHARED_KEY_INFO, ...versions) as KeyInfo
 }
 
-// tslint:disable-next-line: export-name
-export default <ComposeVersionKeys>{
+export default {
   v1: mergeWithSharedKeys(DOCKER_COMPOSE_V1_KEY_INFO),
   v2: mergeWithSharedKeys(DOCKER_COMPOSE_V2_KEY_INFO),
   "v2.1": mergeWithSharedKeys(DOCKER_COMPOSE_V2_KEY_INFO, DOCKER_COMPOSE_V2_1_KEY_INFO),
   "v2.2": mergeWithSharedKeys(DOCKER_COMPOSE_V2_KEY_INFO, DOCKER_COMPOSE_V2_1_KEY_INFO, DOCKER_COMPOSE_V2_2_KEY_INFO),
   All: mergeWithSharedKeys(DOCKER_COMPOSE_V1_KEY_INFO, DOCKER_COMPOSE_V2_KEY_INFO, DOCKER_COMPOSE_V2_1_KEY_INFO, DOCKER_COMPOSE_V2_2_KEY_INFO)
-}
+} as ComposeVersionKeys

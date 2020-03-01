@@ -2,22 +2,26 @@ import path from 'path'
 import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, workspace, services, languages, LanguageClientOptions } from 'coc.nvim'
 import { DockerComposeCompletionItemProvider } from './dockerCompose/dockerComposeCompletionItemProvider'
 
+interface DockerConfig {
+  enable: boolean
+}
+
 export async function activate(context: ExtensionContext): Promise<void> {
 
-  const config = workspace.getConfiguration().get('docker', {}) as any
+  const config = workspace.getConfiguration().get('docker', {}) as DockerConfig
   if (config.enable === false) {
     return
   }
 
-  let serverModule = context.asAbsolutePath(path.join('node_modules', 'dockerfile-language-server-nodejs', 'lib', 'server.js'))
+  const serverModule = context.asAbsolutePath(path.join('node_modules', 'dockerfile-language-server-nodejs', 'lib', 'server.js'))
 
-  let serverOptions: ServerOptions = {
+  const serverOptions: ServerOptions = {
     module: serverModule,
     transport: TransportKind.ipc,
     args: ["--node-ipc"]
   }
 
-  let clientOptions: LanguageClientOptions = {
+  const clientOptions: LanguageClientOptions = {
     documentSelector: ['Dockerfile', 'dockerfile']
   }
 
