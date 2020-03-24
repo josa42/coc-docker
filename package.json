@@ -59,7 +59,7 @@
     "typescript": "~3.8.3"
   },
   "dependencies": {
-    "dockerfile-language-server-nodejs": "^0.0.21",
+    "dockerfile-language-server-nodejs": "^0.0.22",
     "tslib": "^1.11.1"
   }
 }
