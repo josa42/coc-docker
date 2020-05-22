@@ -1,6 +1,6 @@
 {
   "name": "coc-docker",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "docker extension for coc",
   "author": "josa@gesell.me",
   "license": "MIT",
@@ -59,7 +59,7 @@
     "typescript": "~3.8.3"
   },
   "dependencies": {
-    "dockerfile-language-server-nodejs": "^0.0.22",
+    "dockerfile-language-server-nodejs": "^0.0.24",
     "tslib": "^1.11.1"
   }
 }
