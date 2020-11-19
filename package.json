@@ -10,7 +10,7 @@
     "url": "https://github.com/josa42/coc-docker.git"
   },
   "engines": {
-    "coc": "^0.0.65"
+    "coc": "^0.0.79"
   },
   "keywords": [
     "coc.nvim",
@@ -49,17 +49,17 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^14.0.13",
-    "@typescript-eslint/eslint-plugin": "^3.2.0",
-    "@typescript-eslint/parser": "^3.2.0",
-    "coc.nvim": "0.0.77",
-    "eslint": "^7.2.0",
+    "@types/node": "^14.14.8",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "coc.nvim": "0.0.79",
+    "eslint": "^7.13.0",
     "eslint-config-josa-typescript": "^0.1.2",
     "rimraf": "^3.0.2",
-    "typescript": "~3.9.5"
+    "typescript": "~4.0.5"
   },
   "dependencies": {
-    "dockerfile-language-server-nodejs": "^0.0.24",
-    "tslib": "^2.0.0"
+    "dockerfile-language-server-nodejs": "^0.1.1",
+    "tslib": "^2.0.3"
   }
 }
