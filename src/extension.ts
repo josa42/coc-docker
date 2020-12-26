@@ -13,7 +13,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
     return
   }
 
-  const serverModule = context.asAbsolutePath(path.join('node_modules', 'dockerfile-language-server-nodejs', 'lib', 'server.js'))
+  //const serverModule = context.asAbsolutePath(path.join('node_modules', 'dockerfile-language-server-nodejs', 'lib', 'server.js'))
+  const serverModule = require.resolve('dockerfile-language-server-nodejs/lib/server.js')
 
   const serverOptions: ServerOptions = {
     module: serverModule,
