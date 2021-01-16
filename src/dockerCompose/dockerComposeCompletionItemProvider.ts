@@ -6,13 +6,13 @@
 'use strict'
 
 import { CompletionItemProvider, workspace } from 'coc.nvim'
-import { TextDocument, CompletionItem, CompletionItemKind, Position, CompletionList } from "vscode-languageserver-protocol"
+import { TextDocument, CompletionItem, CompletionItemKind, Position, CompletionList, CancellationToken } from "vscode-languageserver-protocol"
 import composeVersions from './dockerComposeKeyInfo'
 import { KeyInfo } from './types'
 import { SuggestSupportHelper } from '../utils/suggestSupportHelper'
 
 export class DockerComposeCompletionItemProvider implements CompletionItemProvider {
-  async provideCompletionItems(textDocument: TextDocument, position: Position /*, token: CancellationToken, context?: CompletionContext */): Promise<CompletionItem[] | CompletionList> {
+    async provideCompletionItems(textDocument: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
 
     const hub = new SuggestSupportHelper()
 

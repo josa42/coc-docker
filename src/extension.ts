@@ -1,5 +1,5 @@
 import path from 'path'
-import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, workspace, services, languages, LanguageClientOptions } from 'coc.nvim'
+import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, window, workspace, services, languages, LanguageClientOptions } from 'coc.nvim'
 import { DockerComposeCompletionItemProvider } from './dockerCompose/dockerComposeCompletionItemProvider'
 
 interface DockerConfig {
@@ -31,7 +31,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
     services.registLanguageClient(client),
     commands.registerCommand("docker.version", async () => {
       const v = require(path.resolve(__dirname, '..', 'package.json')).version
-      workspace.showMessage(`Version: ${v}`, 'more')
+      window.showMessage(`Version: ${v}`, 'more')
     })
   )
 
