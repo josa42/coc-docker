@@ -7,7 +7,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { CompletionItem, CompletionItemKind } from "vscode-languageserver-protocol"
+import { CompletionItem, CompletionItemKind } from "coc.nvim"
 import { request, RequestOptions } from 'https'
 
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'package.json'), 'utf-8'))

@@ -5,14 +5,13 @@
 
 'use strict'
 
-import { CompletionItemProvider, workspace } from 'coc.nvim'
-import { TextDocument, CompletionItem, CompletionItemKind, Position, CompletionList, CancellationToken } from "vscode-languageserver-protocol"
+import { CompletionItemProvider,CompletionList, CompletionItem, CompletionItemKind, ProviderResult, TextDocument, workspace, Position, CancellationToken, CompletionContext } from 'coc.nvim'
 import composeVersions from './dockerComposeKeyInfo'
 import { KeyInfo } from './types'
 import { SuggestSupportHelper } from '../utils/suggestSupportHelper'
 
 export class DockerComposeCompletionItemProvider implements CompletionItemProvider {
-    async provideCompletionItems(textDocument: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
+    async provideCompletionItems(textDocument: TextDocument, position: Position, token: CancellationToken, context: CompletionContext): Promise<CompletionItem[]> {
 
     const hub = new SuggestSupportHelper()
 
@@ -64,7 +63,7 @@ export class DockerComposeCompletionItemProvider implements CompletionItemProvid
     const keys = composeVersions[`v${version}`] as KeyInfo || composeVersions.All
 
     return Object.keys(keys).map(ruleName => {
-      const completionItem = CompletionItem.create(ruleName)
+      const completionItem: CompletionItem = { label: ruleName }
       completionItem.kind = CompletionItemKind.Keyword
       completionItem.insertText = ruleName + ': '
       completionItem.documentation = keys[ruleName]
