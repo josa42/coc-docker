@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, window, workspace, services, languages, LanguageClientOptions } from 'coc.nvim'
+import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, window, workspace, services, LanguageClientOptions } from 'coc.nvim'
 
 interface DockerConfig {
   enable: boolean
