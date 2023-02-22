@@ -32,11 +32,11 @@ export async function activate(context: ExtensionContext): Promise<void> {
     services.registLanguageClient(client),
     commands.registerCommand("docker.version", async () => {
       const v = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf-8')).version
-      window.showMessage(`Version: ${v}`, 'more')
+      window.showInformationMessage(`Version: ${v}`)
     })
   )
 
   context.subscriptions.push(
-    languages.registerCompletionItemProvider('docker-compose', 'docker', 'yaml.docker-compose', new DockerComposeCompletionItemProvider())
+    languages.registerCompletionItemProvider('docker-compose', 'docker', ['yaml.docker-compose'], new DockerComposeCompletionItemProvider())
   )
 }
