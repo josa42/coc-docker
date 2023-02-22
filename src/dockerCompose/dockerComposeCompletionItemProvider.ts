@@ -5,13 +5,13 @@
 
 'use strict'
 
-import { CompletionItemProvider,CompletionList, CompletionItem, CompletionItemKind, ProviderResult, TextDocument, workspace, Position, CancellationToken, CompletionContext } from 'coc.nvim'
+import { CancellationToken, CompletionItemProvider, CompletionItem, CompletionItemKind, TextDocument, workspace, Position, CompletionContext, CompletionList } from 'coc.nvim'
 import composeVersions from './dockerComposeKeyInfo'
 import { KeyInfo } from './types'
 import { SuggestSupportHelper } from '../utils/suggestSupportHelper'
 
 export class DockerComposeCompletionItemProvider implements CompletionItemProvider {
-    async provideCompletionItems(textDocument: TextDocument, position: Position, token: CancellationToken, context: CompletionContext): Promise<CompletionItem[]> {
+    async provideCompletionItems(textDocument: TextDocument, position: Position, _token: CancellationToken, _context?: CompletionContext): Promise<CompletionItem[] | CompletionList> {
 
     const hub = new SuggestSupportHelper()
 
@@ -57,7 +57,7 @@ export class DockerComposeCompletionItemProvider implements CompletionItemProvid
     return Promise.resolve([])
   }
 
-  private suggestKeys(word: string, version: string): CompletionItem[] {
+  private suggestKeys(_word: string, version: string): CompletionItem[] {
     // Attempt to grab the keys for the requested schema version,
     // otherwise, fall back to showing a composition of all possible keys.
     const keys = composeVersions[`v${version}`] as KeyInfo || composeVersions.All
@@ -71,4 +71,3 @@ export class DockerComposeCompletionItemProvider implements CompletionItemProvid
     })
   }
 }
-
