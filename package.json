@@ -30,7 +30,6 @@
   "activationEvents": [
     "onLanguage:Dockerfile",
     "onLanguage:dockerfile",
-    "onLanguage:yaml.docker-compose",
     "onCommand:docker.version"
   ],
   "contributes": {

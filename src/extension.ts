@@ -1,7 +1,6 @@
 import path from 'path'
 import fs from 'fs'
 import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, window, workspace, services, languages, LanguageClientOptions } from 'coc.nvim'
-import { DockerComposeCompletionItemProvider } from './dockerCompose/dockerComposeCompletionItemProvider'
 
 interface DockerConfig {
   enable: boolean
@@ -34,9 +33,5 @@ export async function activate(context: ExtensionContext): Promise<void> {
       const v = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf-8')).version
       window.showInformationMessage(`Version: ${v}`)
     })
-  )
-
-  context.subscriptions.push(
-    languages.registerCompletionItemProvider('docker-compose', 'docker', ['yaml.docker-compose'], new DockerComposeCompletionItemProvider())
   )
 }
