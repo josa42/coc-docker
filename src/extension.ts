@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs'
 import { TransportKind, ExtensionContext, LanguageClient, ServerOptions, commands, window, workspace, services, languages, LanguageClientOptions } from 'coc.nvim'
 import { DockerComposeCompletionItemProvider } from './dockerCompose/dockerComposeCompletionItemProvider'
 
@@ -30,7 +31,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   context.subscriptions.push(
     services.registLanguageClient(client),
     commands.registerCommand("docker.version", async () => {
-      const v = require(path.resolve(__dirname, '..', 'package.json')).version
+      const v = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf-8')).version
       window.showMessage(`Version: ${v}`, 'more')
     })
   )
@@ -39,4 +40,3 @@ export async function activate(context: ExtensionContext): Promise<void> {
     languages.registerCompletionItemProvider('docker-compose', 'docker', 'yaml.docker-compose', new DockerComposeCompletionItemProvider())
   )
 }
-

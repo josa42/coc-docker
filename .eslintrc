@@ -1,4 +1,20 @@
 {
-  "extends": ["josa-typescript"]
+  "root": true,
+  "extends": ["josa-typescript"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "no-unused-vars": ["off"],
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      }
+    }
+  ]
 }
 
